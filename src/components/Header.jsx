@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuthContext } from '../AuthContext';
 
-export default function NavbarBasic({ logged }) {
+export default function NavbarBasic() {
   const [isToggleOpen, setIsToggleOpen] = useState(false);
+  const { logged } = useAuthContext();
 
   return (
     <>
@@ -130,7 +132,7 @@ export default function NavbarBasic({ logged }) {
                   role="menuitem"
                   aria-haspopup="false"
                   className="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                  to="/login"
+                  to={logged ? '/logout' : '/login'}
                 >
                   <span>{logged ? 'Log out' : 'Log in'}</span>
                 </Link>

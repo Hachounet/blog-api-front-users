@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
+import { useAuthContext } from '../AuthContext';
 
-export default function useFetch(url) {
+export default function useAuth(url) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { setLogged } = useAuthContext();
+
   const token = localStorage.getItem('accessToken');
 
   useEffect(() => {
     if (!token) {
+      setLogged(false);
       window.location.href = '/login'; // Redirect if no token
+
       return;
     }
 
@@ -22,7 +27,10 @@ export default function useFetch(url) {
         });
 
         if (response.status === 401) {
+          localStorage.removeItem('accessToken');
+          setLogged(false);
           window.location.href = '/login'; // Redirect if unauthorized
+
           return;
         }
 

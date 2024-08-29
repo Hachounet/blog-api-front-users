@@ -3,8 +3,12 @@ import MailInput from './MailInput';
 import PasswordInput from './PasswordInput';
 import ButtonElevatedBase from './ButtonElevatedBase';
 import PropTypes from 'prop-types';
+import { useAuthContext } from '../AuthContext';
+import { toast } from 'react-toastify';
 
 export default function Login({ postURL }) {
+  const { setLogged } = useAuthContext();
+
   const [errors, setErrors] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -34,6 +38,13 @@ export default function Login({ postURL }) {
           setSuccessMessage(data.message);
           setErrors([]);
           localStorage.setItem('accessToken', data.accessToken);
+          setLogged(true);
+          toast.success('Successfully logged in!', {
+            position: 'bottom-right',
+          });
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 3000);
         }
       })
       // eslint-disable-next-line no-unused-vars
