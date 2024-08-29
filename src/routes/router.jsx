@@ -7,6 +7,7 @@ import Logout from '../components/Logout';
 import SignUp from '../components/SignUp';
 import AllPosts from '../components/AllPosts';
 import Profile from '../components/Profile';
+import Article from '../components/Article';
 
 const router = createBrowserRouter([
   {
@@ -22,9 +23,16 @@ const router = createBrowserRouter([
       },
       {
         path: '/posts',
+
         element: (
           <AllPosts url="https://hachounet-blog-api-backend.adaptable.app/posts" />
         ),
+      },
+      {
+        path: '/posts/:postId', // Définition de la route avec l'ID du post
+        element: (
+          <Article url="https://hachounet-blog-api-backend.adaptable.app/posts/" />
+        ), // Passage de l'URL de base
       },
       {
         path: '/signup',

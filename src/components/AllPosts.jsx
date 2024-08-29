@@ -2,6 +2,7 @@ import { formatDistanceToNow } from 'date-fns';
 import useFetch from '../hooks/fetchPosts';
 import { fr } from 'date-fns/locale';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default function AllPosts({ url }) {
   const { data, loading, error } = useFetch(url);
@@ -26,7 +27,9 @@ export default function AllPosts({ url }) {
                 key={item.id}
               >
                 <span className="text-center">
-                  <a href={`/posts/${item.id}`}>{item.title}</a>{' '}
+                  <Link to={`/posts/${item.id}`}>
+                    <span>{item.title}</span>
+                  </Link>
                 </span>
                 <span className="text-center text-sm">
                   Author: {item.author.pseudo}
