@@ -3,6 +3,7 @@ import useFetch from '../hooks/fetchPosts';
 import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import { enGB } from 'date-fns/locale';
+import Comments from './Comments';
 
 export default function Article({ url }) {
   const { postId } = useParams();
@@ -20,21 +21,27 @@ export default function Article({ url }) {
 
   return (
     <>
-      <div className="text-xl flex items-center flex-grow mb-[193.25px] flex-col">
-        <div className="flex text-sm">
-          {' '}
-          <span>
-            Published :{' '}
-            {formatDistanceToNow(new Date(data.createdAt), {
-              addSuffix: true,
-              locale: enGB,
-            })}{' '}
-            by {data.author.pseudo}
-          </span>{' '}
-        </div>
-        <h1 className="text-4xl pb-4">{data.title}</h1>
+      <div className="">
+        {' '}
+        <div className="text-xl flex items-center flex-grow flex-col">
+          <div className="flex text-sm">
+            {' '}
+            <span>
+              Published :{' '}
+              {formatDistanceToNow(new Date(data.createdAt), {
+                addSuffix: true,
+                locale: enGB,
+              })}{' '}
+              by {data.author.pseudo}
+            </span>{' '}
+          </div>
+          <h1 className="text-4xl pb-4">{data.title}</h1>
 
-        <span>{data.Content}</span>
+          <span>{data.Content}</span>
+        </div>
+        <div className="flex justify-center">
+          <Comments comments={data.comments} />
+        </div>
       </div>
     </>
   );

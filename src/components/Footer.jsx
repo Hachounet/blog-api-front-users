@@ -2,7 +2,7 @@ export default function FooterThreeCols() {
   return (
     <>
       {/*    <!-- Component: Three Columns Footer --> */}
-      <footer className="w-full text-slate-500 fixed bottom-0">
+      <footer className="w-full text-slate-500 ">
         {/*      <!-- Main footer --> */}
         <div className="pt-16 pb-12 text-sm border-t border-slate-200 bg-slate-100">
           <div className="container px-6 mx-auto">
