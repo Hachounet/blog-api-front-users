@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const LikeButton = ({ commentId, postId, numbLikes, hasLiked }) => {
   const [likes, setLikes] = useState(numbLikes);
   const [isLiked, setIsLiked] = useState(hasLiked);
-  const { logged, token } = useAuthContext();
+  const { logged, token, setLogged } = useAuthContext();
 
   const url = 'https://hachounet-blog-api-backend.adaptable.app/posts/';
 
@@ -34,6 +34,8 @@ const LikeButton = ({ commentId, postId, numbLikes, hasLiked }) => {
         }
         setIsLiked(!isLiked);
       } else if (response.status === 401) {
+        localStorage.removeItem('accessToken');
+        setLogged(false);
         window.location.href = '/login';
       }
       // eslint-disable-next-line no-unused-vars
