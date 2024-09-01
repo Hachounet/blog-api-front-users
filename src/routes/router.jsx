@@ -29,10 +29,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/posts/:postId', // Définition de la route avec l'ID du post
+        path: '/posts/:postId',
         element: (
           <Article url="https://hachounet-blog-api-backend.adaptable.app/posts/" />
-        ), // Passage de l'URL de base
+        ),
       },
       {
         path: '/signup',

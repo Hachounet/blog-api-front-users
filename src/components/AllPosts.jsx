@@ -1,5 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 import useFetch from '../hooks/fetchPosts';
+
 import { fr } from 'date-fns/locale';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';

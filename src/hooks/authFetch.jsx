@@ -5,46 +5,42 @@ export default function useAuth(url) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { setLogged } = useAuthContext();
-
-  const token = localStorage.getItem('accessToken');
+  const { setLogged, token } = useAuthContext();
 
   useEffect(() => {
     if (!token) {
       setLogged(false);
-      window.location.href = '/login'; // Redirect if no token
+      window.location.href = '/login';
 
       return;
     }
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
         if (response.status === 401) {
           localStorage.removeItem('accessToken');
           setLogged(false);
-          window.location.href = '/login'; // Redirect if unauthorized
+          window.location.href = '/login';
 
           return;
         }
 
-        const jsonData = await response.json(); // Récupère les données JSON
-        setData(jsonData); // Stocke les données récupérées
-      } catch (error) {
-        setError(error); // Gère les erreurs
-      } finally {
-        setLoading(false); // Met fin à l'état de chargement
-      }
-    };
+        return response.json();
+      })
+      .then((jsonData) => {
+        setData(jsonData);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, [token, url]);
 
-    fetchData(); // Appelle la fonction fetch
-  }, [token, url]); // Dépendances pour l'effet
-
-  return { data, loading, error }; // Retourne les données, l'état de chargement et les erreurs
+  return { data, loading, error };
 }

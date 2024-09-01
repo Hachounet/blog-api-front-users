@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import LikeButton from './Like';
+import PropTypes from 'prop-types';
 
-export default function Comments({ comments }) {
+export default function Comments({ comments, postId }) {
   // Save comments
   const [uniqueComments, setUniqueComments] = useState([]);
-
   // Function to remove duplicate comments with potential nested child comments
   function removeDuplicateComments(comments) {
     const ids = new Set();
@@ -73,6 +74,12 @@ export default function Comments({ comments }) {
                 </span>
               </h4>
               <p className="text-slate-500">{comment.content}</p>
+              <LikeButton
+                commentId={comment.id}
+                postId={postId}
+                numbLikes={comment._count.Like}
+                hasLiked={comment.userHasLiked}
+              ></LikeButton>
             </div>
 
             {comment.Children && comment.Children.length > 0 && (
@@ -86,3 +93,8 @@ export default function Comments({ comments }) {
 
   return <>{renderComments(uniqueComments)}</>; // Rendu des commentaires uniques
 }
+
+Comments.propTypes = {
+  comments: PropTypes.array,
+  postId: PropTypes.string,
+};
