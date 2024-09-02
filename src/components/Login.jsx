@@ -54,12 +54,18 @@ export default function Login({ postURL }) {
   };
 
   return (
-    <div>
+    <div className="max-w-52 mx-auto">
       {successMessage && <span>{successMessage}</span>}
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col justify-center items-center pt-52"
+      >
         <MailInput />
         <PasswordInput />
-        <ButtonElevatedBase text="Log in" />
+        <ButtonElevatedBase
+          text="Log in"
+          className1="max-w-[50%]"
+        />
       </form>
       {errors.length > 0 && (
         <ul>
