@@ -4,7 +4,7 @@ import TextArea from './Textarea';
 import ButtonElevatedBase from './ButtonElevatedBase';
 import PropTypes from 'prop-types';
 import { useAuthContext } from '../AuthContext';
-import useAuth from '../hooks/authFetch';
+import SeeMoreBtn from './SeeMoreBtn';
 
 export default function Comments({ comments, postId }) {
   const { logged, token, setLogged } = useAuthContext();
@@ -12,10 +12,42 @@ export default function Comments({ comments, postId }) {
   const [newComment, setNewComment] = useState('');
   const [uniqueComments, setUniqueComments] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
-
-  console.log(uniqueComments);
-
+  const [pageCount, setPageCount] = useState(0);
+  const [disabledSeeMore, setDisabledSeeMore] = useState(false);
   const url = 'https://hachounet-blog-api-backend.adaptable.app/posts/';
+
+  const handleSeeMore = async (event) => {
+    event.preventDefault();
+    console.log('hey ho');
+    const nextPage = pageCount + 1; // Calculer la prochaine page à requêter
+    setPageCount(nextPage); // Incrémenter le compteur de pages
+
+    try {
+      const response = await fetch(`${url}${postId}/comments/${nextPage}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+
+        if (data.commentsEmpty) {
+          setErrorMessage('You reached the end of comments!');
+          setDisabledSeeMore((prevState) => !prevState);
+        } else {
+          setUniqueComments((prevComments) => [...prevComments, ...data]);
+        }
+      } else {
+        setErrorMessage('Failed to fetch more comments.');
+      }
+    } catch (err) {
+      setErrorMessage('Error fetching comments.');
+    }
+  };
 
   const handlePostComment = async (event) => {
     event.preventDefault();
@@ -162,65 +194,67 @@ export default function Comments({ comments, postId }) {
 
   const renderComments = (comments) => {
     return (
-      <ul
-        role="feed"
-        className="relative flex flex-col gap-12 py-12 pl-8 before:absolute before:top-0 before:left-8 before:h-full before:-translate-x-1/2 before:border before:border-dashed before:border-slate-200 after:absolute after:top-6 after:left-8 after:bottom-6 after:-translate-x-1/2 after:border after:border-slate-200"
-      >
-        {comments.map((comment) => (
-          <li
-            key={comment.id}
-            role="article"
-            className="relative pl-8"
-          >
-            <div className="flex flex-col flex-1 gap-4">
-              <h4 className="flex flex-col items-start text-lg font-medium leading-8 text-slate-700 md:flex-row lg:items-center">
-                <span className="flex-1">
-                  {comment.author.pseudo}{' '}
-                  <span className="text-base font-normal text-slate-500">
-                    commented
+      <>
+        <ul
+          role="feed"
+          className="relative flex flex-col gap-12 py-12 pl-8 before:absolute before:top-0 before:left-8 before:h-full before:-translate-x-1/2 before:border before:border-dashed before:border-slate-200 after:absolute after:top-6 after:left-8 after:bottom-6 after:-translate-x-1/2 after:border after:border-slate-200"
+        >
+          {comments.map((comment) => (
+            <li
+              key={comment.id}
+              role="article"
+              className="relative pl-8"
+            >
+              <div className="flex flex-col flex-1 gap-4">
+                <h4 className="flex flex-col items-start text-lg font-medium leading-8 text-slate-700 md:flex-row lg:items-center">
+                  <span className="flex-1">
+                    {comment.author.pseudo}{' '}
+                    <span className="text-base font-normal text-slate-500">
+                      commented
+                    </span>
                   </span>
-                </span>
-                <span className="text-sm font-normal text-slate-400">
-                  {' '}
-                  {new Date(comment.createdAt).toLocaleTimeString()}
-                </span>
-              </h4>
-              <p className="text-slate-500">{comment.content}</p>
-              <LikeButton
-                commentId={comment.id}
-                postId={postId}
-                numbLikes={comment._count.Like}
-                hasLiked={comment.userHasLiked}
-              />
-              {logged ? (
-                <form
-                  data-comment-type="response"
-                  data-parent-id={comment.id}
-                  onSubmit={handlePostComment}
-                  className="flex flex-col gap-2"
-                >
-                  <TextArea
-                    value={getRespondValue(comment.id)}
-                    onChange={(event) => handleChange(comment.id, event)}
-                  />
-                  {getRespondValue(comment.id) !== '' && (
-                    <ButtonElevatedBase
-                      text="Respond"
-                      className1="mx-auto"
+                  <span className="text-sm font-normal text-slate-400">
+                    {' '}
+                    {new Date(comment.createdAt).toLocaleTimeString()}
+                  </span>
+                </h4>
+                <p className="text-slate-500">{comment.content}</p>
+                <LikeButton
+                  commentId={comment.id}
+                  postId={postId}
+                  numbLikes={comment._count.Like}
+                  hasLiked={comment.userHasLiked}
+                />
+                {logged ? (
+                  <form
+                    data-comment-type="response"
+                    data-parent-id={comment.id}
+                    onSubmit={handlePostComment}
+                    className="flex flex-col gap-2"
+                  >
+                    <TextArea
+                      value={getRespondValue(comment.id)}
+                      onChange={(event) => handleChange(comment.id, event)}
                     />
-                  )}
-                </form>
-              ) : (
-                'You must be logged in to like or respond.'
-              )}
-            </div>
+                    {getRespondValue(comment.id) !== '' && (
+                      <ButtonElevatedBase
+                        text="Respond"
+                        className1="mx-auto"
+                      />
+                    )}
+                  </form>
+                ) : (
+                  'You must be logged in to like or respond.'
+                )}
+              </div>
 
-            {comment.Children && comment.Children.length > 0 && (
-              <div className="pl-8">{renderComments(comment.Children)}</div>
-            )}
-          </li>
-        ))}
-      </ul>
+              {comment.Children && comment.Children.length > 0 && (
+                <div className="pl-8">{renderComments(comment.Children)}</div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </>
     );
   };
 
@@ -248,6 +282,14 @@ export default function Comments({ comments, postId }) {
       )}
       {errorMessage && <span className="text-red-500">{errorMessage}</span>}
       {renderComments(uniqueComments)}
+      {disabledSeeMore ? (
+        <></>
+      ) : (
+        <SeeMoreBtn
+          text="See more"
+          handleSeeMore={handleSeeMore}
+        />
+      )}
     </>
   );
 }
