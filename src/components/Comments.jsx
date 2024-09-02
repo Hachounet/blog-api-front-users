@@ -18,7 +18,7 @@ export default function Comments({ comments, postId }) {
 
   const handleSeeMore = async (event) => {
     event.preventDefault();
-    console.log('hey ho');
+
     const nextPage = pageCount + 1; // Calculer la prochaine page à requêter
     setPageCount(nextPage); // Incrémenter le compteur de pages
 
@@ -33,7 +33,6 @@ export default function Comments({ comments, postId }) {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
 
         if (data.commentsEmpty) {
           setErrorMessage('You reached the end of comments!');
@@ -44,6 +43,7 @@ export default function Comments({ comments, postId }) {
       } else {
         setErrorMessage('Failed to fetch more comments.');
       }
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       setErrorMessage('Error fetching comments.');
     }
