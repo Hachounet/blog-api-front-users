@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function FooterThreeCols() {
   return (
     <>
@@ -23,8 +25,16 @@ export default function FooterThreeCols() {
                       href="javascript:void(0)"
                       className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600"
                     >
-                      Fake page
+                      Fake page (disabled)
                     </a>
+                  </li>
+                  <li className="mb-2 leading-6">
+                    <Link
+                      to="/disabled"
+                      className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600"
+                    >
+                      Editor panel
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -40,12 +50,12 @@ export default function FooterThreeCols() {
                 </h3>
                 <ul>
                   <li className="mb-2 leading-6">
-                    <a
-                      href="javascript:void(0)"
+                    <Link
+                      to="/about"
                       className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600"
                     >
                       Fake about us page
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -65,7 +75,7 @@ export default function FooterThreeCols() {
                       href="javascript:void(0)"
                       className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600"
                     >
-                      Fake contact page
+                      Fake contact page (disabled)
                     </a>
                   </li>
                 </ul>
