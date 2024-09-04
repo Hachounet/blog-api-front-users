@@ -166,19 +166,21 @@ export default function NavbarBasic() {
                   <span>About</span>
                 </Link>
               </li>
-              <li
-                role="none"
-                className="flex items-stretch"
-              >
-                <Link
-                  role="menuitem"
-                  aria-haspopup="false"
-                  className="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                  to="/profile"
+              {logged && (
+                <li
+                  role="none"
+                  className="flex items-stretch"
                 >
-                  <span>Profile</span>
-                </Link>
-              </li>
+                  <Link
+                    role="menuitem"
+                    aria-haspopup="false"
+                    className="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
+                    to="/profile"
+                  >
+                    <span>Profile</span>
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
         </div>
