@@ -6,7 +6,7 @@ export default function FooterThreeCols() {
       {/*    <!-- Component: Three Columns Footer --> */}
       <footer className="w-full text-slate-500 fixed bottom-0 z-10">
         {/*      <!-- Main footer --> */}
-        <div className="pt-16 pb-12 text-sm border-t border-slate-200 bg-slate-100">
+        <div className="pt-8 pb-2 text-sm border-t border-slate-200 bg-slate-100">
           <div className="container px-6 mx-auto">
             <div className="grid grid-cols-4 gap-6 md:grid-cols-8 lg:grid-cols-12 justify-items-center">
               <nav

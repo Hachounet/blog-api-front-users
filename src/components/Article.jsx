@@ -31,7 +31,7 @@ export default function Article({ url }) {
 
   return (
     <>
-      <div className="pb-[50px] flex flex-col items-center">
+      <div className="pb-[50px] flex flex-col items-center max-w-[70%] mx-auto">
         {' '}
         <div className="text-xl flex items-center flex-grow flex-col min-h-44 max-w-[70vw]">
           <div className="flex text-sm">
