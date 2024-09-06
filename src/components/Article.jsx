@@ -47,7 +47,7 @@ export default function Article({ url }) {
           </div>
           <h1 className="text-4xl pb-4">{data.title}</h1>
 
-          <span dangerouslySetInnerHTML={{ __html: htmlContent }}></span>
+          <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div>
           <span className="pr-8 pl-8 text-center leading-8"></span>
         </div>
         <div className="flex justify-center mx-auto flex-col  overflow-y-auto max-w-[50vw] pt-8 pb-[200px]">
