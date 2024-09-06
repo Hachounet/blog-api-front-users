@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { formatDistanceToNow } from 'date-fns';
 import { enGB } from 'date-fns/locale';
 import Comments from './Comments';
+import DOMPurify from 'dompurify';
 
 import useOptionalAuth from '../hooks/optionalAuthFetch';
 
@@ -11,6 +12,7 @@ export default function Article({ url }) {
   const concatUrl = `${url}${postId}`;
 
   const { data, loading, error } = useOptionalAuth(concatUrl); // optionalAuth to avoid redirecting
+  const htmlContent = DOMPurify.sanitize(data.Content);
   if (loading) return <div>Loading...</div>;
   if (error)
     return (
@@ -37,7 +39,7 @@ export default function Article({ url }) {
           </div>
           <h1 className="text-4xl pb-4">{data.title}</h1>
 
-          <span>{data.Content}</span>
+          <span dangerouslySetInnerHTML={{ __html: htmlContent }}></span>
           <span className="pr-8 pl-8 text-center leading-8"></span>
         </div>
         <div className="flex justify-center mx-auto flex-col  overflow-y-auto max-w-[50vw] pt-8 pb-[200px]">
