@@ -30,7 +30,7 @@ export default function FooterThreeCols() {
                   </li>
                   <li className="mb-2 leading-6">
                     <Link
-                      to="/disabled"
+                      to="https://blog-api-front-cms.vercel.app/"
                       className="transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600"
                     >
                       Editor panel
