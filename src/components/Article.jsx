@@ -6,13 +6,21 @@ import Comments from './Comments';
 import DOMPurify from 'dompurify';
 
 import useOptionalAuth from '../hooks/optionalAuthFetch';
+import { useEffect, useState } from 'react';
 
 export default function Article({ url }) {
   const { postId } = useParams();
   const concatUrl = `${url}${postId}`;
-
+  const [htmlContent, setHtmlContent] = useState('');
   const { data, loading, error } = useOptionalAuth(concatUrl); // optionalAuth to avoid redirecting
-  const htmlContent = DOMPurify.sanitize(data.Content);
+
+  useEffect(() => {
+    if (data) {
+      const newHtmlContent = DOMPurify.sanitize(data.Content);
+      setHtmlContent(newHtmlContent);
+    }
+  }, [data]);
+
   if (loading) return <div>Loading...</div>;
   if (error)
     return (
